@@ -1,6 +1,7 @@
 'use strict'
 const Product = use('App/Models/Product')
 const Category = use('App/Models/Category')
+const Helpers = use('Helpers')
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -55,8 +56,24 @@ class ProductController {
    */
   async store ({ request, response }) {
     try {
-      const {name, description, price, category_id} = request.all()
-      const product = await Product.create({name, description, price, category_id})
+      const data = request.only(['name', 'description', 'price', 'category_id'])
+
+      const photo = request.file('file',{
+        types:['image'],
+        size: '3mb'
+      })
+      if(photo){
+        await photo.move(Helpers.tmpPath('photos'),{
+          name: `${Date.now()}-${photo.clientName}`,
+          overwrite: true
+        })
+        if(!photo.moved()){
+          return photo.error()
+        }
+        data.photo=photo.clientName
+      }
+
+      const product = await Product.create({...data})
       return response.status(201).send({product})
     } catch (error) {
       console.log(error)
@@ -92,12 +109,27 @@ class ProductController {
    */
   async update ({ params, request, response }) {
     try {
-      const {data} = request.all()
+      const data = request.only(['name', 'description', 'price', 'category_id'])
       const product = await Product.findBy('id', params.id)
+      const photo = request.file('file',{
+        types:['image'],
+        size: '3mb'
+      })
+      if(photo){
+        await photo.move(Helpers.tmpPath('photos'),{
+          name: `${Date.now()}-${photo.clientName}`,
+          overwrite: true
+        })
+        if(!photo.moved()){
+          return photo.error()
+        }
+        data.photo=photo.clientName
+      }
       product.merge({...data})
       await product.save()
       return response.send({product})
     } catch (error) {
+      console.log(error)
       return response.status(500).send(error.message)
       
     }

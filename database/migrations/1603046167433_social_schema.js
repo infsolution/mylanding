@@ -7,7 +7,11 @@ class SocialSchema extends Schema {
   up () {
     this.create('socials', (table) => {
       table.increments()
+      table.string('name').notNullable()
+      table.string('link').notNullable()
       table.timestamps()
+      table.integer('user_id')
+      table.foreign('user_id').references('users.id').onDelete('cascade')
     })
   }
 

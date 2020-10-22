@@ -1,0 +1,17 @@
+version: '2.0'
+services:
+    api:
+        container_name:  "${APP_NAME}-nodejs"
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: sh ./docker-start.sh
+        environment:
+            -   NODE_ENV=dev
+        volumes:
+            - .:/home/app
+            - /home/app/node_modules
+        ports:
+            - "3339:3333"
+        networks:
+            - default

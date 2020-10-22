@@ -75,14 +75,7 @@ class FooterController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
-    try {
-      const footer = await Footer.findBy('id', params.id)
-      footer.delete()
-      return response.status(204).send()
-     } catch (error) {
-       return response.status(500).send(error.message)
-       
-     }
+    
   }
 
   /**
@@ -94,6 +87,14 @@ class FooterController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    try {
+      const footer = await Footer.findBy('id', params.id)
+      footer.delete()
+      return response.status(204).send()
+     } catch (error) {
+       return response.status(500).send(error.message)
+       
+     }
   }
 }
 
