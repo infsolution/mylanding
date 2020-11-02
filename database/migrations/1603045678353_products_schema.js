@@ -11,6 +11,7 @@ class ProductsSchema extends Schema {
       table.string('name')
       table.string('description')
       table.float('price', 8, 2)
+      table.string('photo', 256)
       table.integer('category_id')
       table.foreign('category_id').references('categories.id').onDelete('cascade')
     })
