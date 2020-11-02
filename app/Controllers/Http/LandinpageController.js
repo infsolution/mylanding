@@ -30,6 +30,9 @@ class LandinpageController {
     try {
       const landinpage = []
       const user = await User.findBy('username', params.username)
+      if(!user){
+        return response.status(404).send({message: 'Page not found!'})
+      }
       const about = await About.findBy('user_id', user.id)
       landinpage.push(about)
       const category = await Category.query().where('user_id', user.id).with('products').fetch()
