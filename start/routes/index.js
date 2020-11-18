@@ -17,10 +17,7 @@
 const Route = use('Route')
 
 
-
-Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-})
+Route.get('/:username', 'LandinpageController.index').as('landingpage')
 
 require('./auth')
 require('./admin')
