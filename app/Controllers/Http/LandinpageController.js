@@ -28,29 +28,29 @@ class LandinpageController {
    */
   async index ({ request, response, params }) {
     try {
-      const landinpage = []
+      let landinpage = []
       const user = await User.findBy('username', params.username)
       if(!user){
         return response.status(404).send({message: 'Page not found!'})
       }
       const about = await About.query().where('user_id', user.id).fetch()
-      landinpage.push({'aboult':about})
+      landinpage[0]=about.rows  
       const category = await Category.query().where('user_id', user.id).with('products').fetch()
-      landinpage.push({'category':category})
+      landinpage[1]=category.rows
       const contact = await Contact.query().where('user_id', user.id).fetch()
-      landinpage.push({'contact':contact})
+      landinpage[2]=contact.rows
       const footer = await Footer.query().where('user_id', user.id).fetch()
-      landinpage.push({'footer':footer})
+      landinpage[3]=footer.rows
       const galery = await Galery.query().where('user_id', user.id).with('images').fetch()
-      landinpage.push({'galery':galery})
+      landinpage[4]=galery.rows
       const presentetions = await Presentetion.query().where('user_id',user.id).fetch()
-      landinpage.push({'presentetions':presentetions})
+      landinpage[5]=presentetions.rows
       const profile = await Profile.query().where('user_id',user.id).fetch()
-      landinpage.push({'profile':profile})
+      landinpage[6]=profile.rows
       const social = await Social.query().where('user_id', user.id).fetch()
-      landinpage.push({'social':social})
+      landinpage[7]=social.rows
       const testimonial = await Testimonial.query().where('user_id', user.id).fetch()
-      landinpage.push({'testimonial':testimonial})
+      landinpage[8]=testimonial.rows
       return response.send({landinpage})
 
     } catch (error) {

@@ -5,7 +5,7 @@ const Route = use('Route')
 
 
 Route.group(()=>{
-    Route.resource('about','AboutController').apiOnly()
+    Route.resource('aboult','AboutController').apiOnly()
     Route.resource('category','CategoryController').apiOnly()
     Route.resource('galery','GaleryController').apiOnly()
     Route.resource('contact', 'ContactController').apiOnly()
